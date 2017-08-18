@@ -93,18 +93,18 @@ const Carousel = (($) => {
   class Carousel {
 
     constructor(element, config) {
-      this._items             = null
-      this._interval          = null
-      this._activeElement     = null
+      this._items              = null
+      this._interval           = null
+      this._activeElement      = null
 
-      this._isPaused          = false
-      this._isSliding         = false
+      this._isPaused           = false
+      this._isSliding          = false
 
-      this.touchTimeout       = null
+      this.touchTimeout        = null
 
-      this._config            = this._getConfig(config)
-      this._element           = $(element)[0]
-      this._indicatorsElement = $(this._element).find(Selector.INDICATORS)[0]
+      this._config             = this._getConfig(config)
+      this._element            = $(element)[0]
+      this._indicatorsElements = $(this._element).find(Selector.INDICATORS)
 
       this._addEventListeners()
     }
@@ -208,14 +208,14 @@ const Carousel = (($) => {
       $(this._element).off(EVENT_KEY)
       $.removeData(this._element, DATA_KEY)
 
-      this._items             = null
-      this._config            = null
-      this._element           = null
-      this._interval          = null
-      this._isPaused          = null
-      this._isSliding         = null
-      this._activeElement     = null
-      this._indicatorsElement = null
+      this._items              = null
+      this._config             = null
+      this._element            = null
+      this._interval           = null
+      this._isPaused           = null
+      this._isSliding          = null
+      this._activeElement      = null
+      this._indicatorsElements = null
     }
 
 
@@ -316,18 +316,17 @@ const Carousel = (($) => {
     }
 
     _setActiveIndicatorElement(element) {
-      if (this._indicatorsElement) {
-        $(this._indicatorsElement)
+      if (this._indicatorsElements) {
+        $(this._indicatorsElements)
           .find(Selector.ACTIVE)
           .removeClass(ClassName.ACTIVE)
 
-        const nextIndicator = this._indicatorsElement.children[
-          this._getItemIndex(element)
-        ]
-
-        if (nextIndicator) {
+        $(this._indicatorsElements).each((index, indicatorElement) => {
+          const nextIndicator = indicatorElement.children[
+            this._getItemIndex(element)
+          ]
           $(nextIndicator).addClass(ClassName.ACTIVE)
-        }
+        })
       }
     }
 
